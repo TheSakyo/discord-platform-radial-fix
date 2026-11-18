@@ -1,0 +1,176 @@
+/**
+ * @name Platform Radial Fix
+ * @author TheSakyo
+ * @version 1.2.5
+ * @description Fixes PlatformIndicators styling with RadialStatus and restores the default Discord typing indicator.
+ */
+
+/*========================================*/
+/*              TABLE OF CONTENTS         */
+/*========================================*/
+/*
+ *  1. VARIABLES
+ *  2. PLATFORM INDICATORS
+ *      2.1 Base layout
+ *      2.2 User profiles
+ *      2.3 Messages
+ *  3. RADIAL STATUS
+ *      3.1 Mobile phone indicator
+ *  4. TYPING INDICATOR
+ *      4.1 Animated properties
+ *      4.2 Hide RadialStatus rendering
+ *      4.3 Custom pill
+ *      4.4 Dots animation
+ */
+
+
+/*========================================*/
+/*              1. VARIABLES              */
+/*========================================*/
+
+:root {
+    /* Background color of the typing pill (default Discord dark gray) */
+    --vc-typing-bg: #2b2d31;
+
+    /* Size of the typing pill, relative to the avatar (increase to make it bigger) */
+    --vc-typing-width: 69%;
+    --vc-typing-height: 40%;
+
+    /* Hide the duplicate mobile phone icon drawn by RadialStatus */
+    --rs-phone-visible: none;
+}
+
+
+/*========================================*/
+/*         2. PLATFORM INDICATORS         */
+/*========================================*/
+
+/*===< 2.1 BASE LAYOUT >===*/
+
+/* Align platform icons horizontally */
+.vc-platform-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+/*===< 2.2 USER PROFILES >===*/
+
+/* Adjust platform indicators in user profiles */
+.vc-platform-indicator-profile {
+    display: inline-flex;
+    margin: 0 0 0 6px;
+    padding: 0;
+    vertical-align: middle;
+}
+
+/*===< 2.3 MESSAGES >===*/
+
+/* Adjust platform indicators in messages */
+.vc-platform-indicator-message {
+    position: relative;
+    top: -1px;
+    vertical-align: top;
+}
+
+
+/*========================================*/
+/*            3. RADIAL STATUS            */
+/*========================================*/
+
+/*===< 3.1 MOBILE PHONE INDICATOR >===*/
+
+/*
+ * The phone icon is already hidden through the
+ * --rs-phone-visible variable declared in section 1.
+ * Nothing else is overridden here on purpose:
+ * RadialStatus must stay untouched.
+ */
+
+
+/*========================================*/
+/*         4. TYPING INDICATOR            */
+/*========================================*/
+
+/*===< 4.1 ANIMATED PROPERTIES >===*/
+
+/* Register one animatable opacity per dot */
+@property --vc-dot-1 { syntax: "<number>"; inherits: false; initial-value: 0.4; }
+@property --vc-dot-2 { syntax: "<number>"; inherits: false; initial-value: 0.4; }
+@property --vc-dot-3 { syntax: "<number>"; inherits: false; initial-value: 0.4; }
+
+/*===< 4.2 HIDE RADIALSTATUS RENDERING >===*/
+
+/*
+ * RadialStatus turns the typing background into a 30px gray circle
+ * and forces the dots coordinates (cx / cy), which displaces them.
+ * We hide that whole rendering and redraw it ourselves below.
+ */
+#app-mount .wrapper_XpIUHy rect[mask*="typing"],
+#app-mount .wrapper_XpIUHy rect[x="14.5"],
+#app-mount .wrapper_XpIUHy svg[width="25"][height="15"],
+#app-mount .wrapper_XpIUHy [class*="dots_"] {
+    display: none !important;
+}
+
+/*===< 4.3 CUSTOM PILL >===*/
+
+/* Anchor the custom pill to the avatar (ignore 16px avatars) */
+#app-mount .wrapper_XpIUHy:has(:is(rect[mask*="typing"], rect[x="14.5"], [class*="dots_"])):not([style*="16px"]) {
+    position: relative;
+}
+
+/* Default Discord typing pill, bottom-right of the avatar */
+#app-mount .wrapper_XpIUHy:has(:is(rect[mask*="typing"], rect[x="14.5"], [class*="dots_"])):not([style*="16px"])::after {
+    content: "";
+
+    /* Position and size (percentages so it scales with the avatar) */
+    position: absolute;
+    right: -14%;
+    bottom: -5%;
+    width: var(--vc-typing-width);
+    height: var(--vc-typing-height);
+    z-index: 2;
+    pointer-events: none;
+
+    /* Pill shape */
+    border-radius: 999px;
+
+    /* Pill background + the 3 dots */
+    background-color: var(--vc-typing-bg);
+    background-image:
+        radial-gradient(circle closest-side, rgb(255 255 255 / var(--vc-dot-1)) 90%, transparent 100%),
+        radial-gradient(circle closest-side, rgb(255 255 255 / var(--vc-dot-2)) 90%, transparent 100%),
+        radial-gradient(circle closest-side, rgb(255 255 255 / var(--vc-dot-3)) 90%, transparent 100%);
+    background-size: 16% 28%;
+    background-repeat: no-repeat;
+    background-position: 22% 50%, 50% 50%, 78% 50%;
+
+    /* Wave animation, each dot is delayed by 0.2s */
+    animation:
+        vc-typing-1 1.4s infinite ease-in-out,
+        vc-typing-2 1.4s 0.2s infinite ease-in-out,
+        vc-typing-3 1.4s 0.4s infinite ease-in-out;
+}
+
+/*===< 4.4 DOTS ANIMATION >===*/
+
+/* First dot */
+@keyframes vc-typing-1 {
+    0%, 60%, 100% { --vc-dot-1: 0.4; }
+    30%           { --vc-dot-1: 1; }
+}
+
+/* Second dot */
+@keyframes vc-typing-2 {
+    0%, 60%, 100% { --vc-dot-2: 0.4; }
+    30%           { --vc-dot-2: 1; }
+}
+
+/* Third dot */
+@keyframes vc-typing-3 {
+    0%, 60%, 100% { --vc-dot-3: 0.4; }
+    30%           { --vc-dot-3: 1; }
+}

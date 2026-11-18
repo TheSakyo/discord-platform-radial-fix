@@ -112,7 +112,7 @@ The file is split into numbered sections with a table of contents at the top, so
 
 ## Credits
 
-- **PlatformIndicators**: by kemo, TheSun, Nuckyz, Ven and neoarz, part of [Equicord](https://github.com/Equicord/Equicord) / Vencord.
+- **PlatformIndicators**: by kemo, TheSun, Nuckyz, Ven and neoarz, part of [Equicord](https://github.com/Equicord/Equicord) / [Vencord](https://github.com/Vendicated/Vencord).
 - **RadialStatus**: by [Gibbu](https://github.com/DiscordStyles/RadialStatus).
 - **Platform Radial Fix**: by TheSakyo.
 

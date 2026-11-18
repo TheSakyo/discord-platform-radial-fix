@@ -18,6 +18,7 @@
  *      2.3 Messages
  *  3. RADIAL STATUS
  *      3.1 Mobile phone indicator
+ *      3.2 Mobile ring color
  *  4. TYPING INDICATOR
  *      4.1 Animated properties
  *      4.2 Hide RadialStatus rendering
@@ -90,6 +91,30 @@
  * Nothing else is overridden here on purpose:
  * RadialStatus must stay untouched.
  */
+
+ /*===< 3.2 MOBILE RING COLOR >===*/
+
+/*
+ * RadialStatus paints the ring of every mobile avatar with --rs-phone-color
+ * (green by default), whatever the real status is.
+ * We override that variable per status, based on the avatar's real fill color.
+ */
+
+/* Idle */
+#app-mount .wrapper_XpIUHy:has(
+    foreignObject[mask*="mobile"] + rect:is([fill="#f0b232"], [fill="#cc954c"], [fill="#ca9654"], [fill="#ffc04e"], [fill*="idle"]),
+    foreignObject[mask*="mobile"] + g > rect:is([fill="#f0b232"], [fill="#cc954c"], [fill="#ca9654"], [fill="#ffc04e"], [fill*="idle"])
+) {
+    --rs-phone-color: var(--rs-idle-color, #faa61a);
+}
+
+/* Do not disturb */
+#app-mount .wrapper_XpIUHy:has(
+    foreignObject[mask*="mobile"] + rect:is([fill="#f23f43"], [fill="#d83a41"], [fill="#d83a42"], [fill="#da3e44"], [fill*="dnd"]),
+    foreignObject[mask*="mobile"] + g > rect:is([fill="#f23f43"], [fill="#d83a41"], [fill="#d83a42"], [fill="#da3e44"], [fill*="dnd"])
+) {
+    --rs-phone-color: var(--rs-dnd-color, #f04747);
+}
 
 
 /*========================================*/

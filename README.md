@@ -12,7 +12,7 @@ This theme **does not modify** PlatformIndicators or RadialStatus. It only overr
 
 | Problem | Without the fix | With the fix |
 | --- | --- | --- |
-| Typing indicator (the "..." animation) | A large gray circle shifted away from the avatar, and the dots drawn on top of the avatar | The default Discord pill with 3 animated dots, at the bottom-right of the avatar |
+| Typing indicator (the "..." animation) | A large dark circle shifted away from the avatar, and the dots drawn on top of the avatar | The default Discord pill with 3 animated dots, at the bottom-right of the avatar |
 | Platform icons layout | Misaligned next to the username in some places | Icons aligned horizontally, spaced consistently (member list, profiles, messages) |
 | Mobile phone icon | Duplicated (drawn by both PlatformIndicators and RadialStatus) | Only the PlatformIndicators one is kept |
 
@@ -84,9 +84,9 @@ Because sizes are percentages, the pill scales with every avatar size (32, 40, 8
 
 ## How it works
 
-RadialStatus turns the typing background into a 30px gray circle and forces the coordinates (`cx` / `cy`) of the three dots, which displaces them. CSS cannot revert those values, so instead of fighting them this theme:
+RadialStatus replaces the status dot with a colored ring around the avatar, matching your status (online, idle, do not disturb...). For the typing indicator, however, its rules enlarge the pill background into a large semi-transparent dark circle (30px) and force the coordinates (`cx` / `cy`) of the three dots, which displaces them from the avatar. CSS cannot revert those values, so instead of fighting them this theme:
 
-1. **Hides** RadialStatus' typing rendering (`display: none !important`).
+1. **Hides** only RadialStatus' typing rendering (`display: none !important`), leaving the status ring untouched.
 2. **Detects** an avatar in the "typing" state with `:has(...)`.
 3. **Redraws** the Discord pill with an `::after` pseudo-element on the avatar, using three radial gradients as dots.
 4. **Animates** each dot's opacity through registered custom properties (`@property`), with a 0.2s delay between dots.

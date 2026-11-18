@@ -12,7 +12,7 @@ Ce thème **ne modifie pas** PlatformIndicators ni RadialStatus. Il surcharge un
 
 | Problème | Sans le fix | Avec le fix |
 | --- | --- | --- |
-| Indicateur d'écriture (l'animation « ... ») | Un gros cercle gris décalé de l'avatar, et les points dessinés par-dessus l'avatar | La pilule Discord par défaut avec 3 points animés, en bas à droite de l'avatar |
+| Indicateur d'écriture (l'animation « ... ») | Un gros cercle sombre décalé de l'avatar, et les points dessinés par-dessus l'avatar | La pilule Discord par défaut avec 3 points animés, en bas à droite de l'avatar |
 | Disposition des icônes de plateforme | Mal alignées à côté du pseudo à certains endroits | Icônes alignées horizontalement et espacées de façon cohérente (liste des membres, profils, messages) |
 | Icône de téléphone mobile | En double (dessinée par PlatformIndicators et par RadialStatus) | Seule celle de PlatformIndicators est conservée |
 
@@ -84,9 +84,9 @@ Les tailles étant en pourcentage, la pilule s'adapte à toutes les tailles d'av
 
 ## Comment ça marche
 
-RadialStatus transforme le fond de l'indicateur d'écriture en cercle gris de 30px et force les coordonnées (`cx` / `cy`) des trois points, ce qui les décale. CSS ne peut pas annuler ces valeurs, donc au lieu de les combattre, ce thème :
+RadialStatus remplace le point de statut par un anneau coloré autour de l'avatar, selon ton statut (en ligne, inactif, ne pas déranger...). Mais pour l'indicateur d'écriture, ses règles agrandissent le fond de la pilule en un gros cercle sombre semi-transparent de 30px et forcent les coordonnées (`cx` / `cy`) des trois points, ce qui les décale par rapport à l'avatar. CSS ne peut pas annuler ces valeurs, donc au lieu de les combattre, ce thème :
 
-1. **Masque** le rendu d'écriture de RadialStatus (`display: none !important`).
+1. **Masque** uniquement le rendu d'écriture de RadialStatus (`display: none !important`), sans toucher à l'anneau de statut.
 2. **Détecte** un avatar en état « en train d'écrire » avec `:has(...)`.
 3. **Redessine** la pilule Discord avec un pseudo-élément `::after` sur l'avatar, en utilisant trois dégradés radiaux comme points.
 4. **Anime** l'opacité de chaque point via des propriétés personnalisées enregistrées (`@property`), avec 0,2s de décalage entre les points.

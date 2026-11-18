@@ -45,7 +45,7 @@ You need **all** of the following:
 2. Make sure the RadialStatus line is **above** this one, then add:
 
 ```
-https://raw.githubusercontent.com/<your-username>/<your-repo>/main/platform-radial-fix.theme.css
+https://raw.githubusercontent.com/TheSakyo/discord-platform-radial-fix/main/platform-radial-fix.theme.css
 ```
 
 3. Enable it, done.
